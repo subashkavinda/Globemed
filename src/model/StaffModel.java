@@ -7,7 +7,6 @@ public class StaffModel {
     private String first_name;
     private String last_name;
     private String role;
-    private String department;
     private String email;
     private String phone;
     private String created_at;
@@ -15,11 +14,11 @@ public class StaffModel {
     private String password;
     
     
-    public StaffModel(String firstname,String lastname,String role,String depertment,String email,String phone,String createdat,String updatedat,String password){
+    public StaffModel(String firstname,String lastname,String role,String email,String phone,String createdat,String updatedat,String password){
         this.first_name = firstname;
         this.last_name = lastname;
         this.role = role;
-        this.department = depertment;
+     
         this.email = email;
         this.phone = phone;
         this.created_at = createdat;
@@ -54,13 +53,7 @@ public class StaffModel {
         this.role = role;
     }
 
-    public String getDepartment() {
-        return department;
-    }
 
-    public void setDepartment(String department) {
-        this.department = department;
-    }
 
     public String getEmail() {
         return email;

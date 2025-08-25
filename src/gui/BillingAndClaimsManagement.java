@@ -17,8 +17,9 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
         setInsuranceFieldsVisible(false);
         loadServicetype();
     }
-    
+
     private int id;
+    int billingId;
 
     void setInsuranceFieldsVisible(boolean visible) {
 
@@ -262,6 +263,7 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
         String companyName = jTextField4.getText();
         String policyNumber = jTextField5.getText();
         String policyholderName = jTextField6.getText();
+        String status = "Pending";
 
         if (nic.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Add Appointment Details", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -275,8 +277,41 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Enter Policy Holder Name", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
 
-            Claim standardClaim = new Claim(nic, "CONSULTATION", Double.parseDouble("100"));
-            boolean result1 = processor.processStandardClaim(standardClaim);
+            try {
+                ResultSet rss = MySQL.execute("SELECT * FROM `billing` WHERE `appointments_appointment_id`='" + id + "' AND `patients_nic`='" + nic + "'");
+
+                if (rss.next()) {
+                    JOptionPane.showMessageDialog(this, "Allready Submitted", "Warning", JOptionPane.WARNING_MESSAGE);
+                } else {
+
+                    Claim standardClaim = new Claim(nic, "CONSULTATION", Double.parseDouble("100"));
+                    boolean result1 = processor.processStandardClaim(standardClaim);
+
+                    try {
+                        MySQL.execute("INSERT INTO `billing` (`total_amount`,`status`,`appointments_appointment_id`,`patients_nic`) VALUES ('" + amount + "','" + status + "','" + id + "','" + nic + "')");
+                        ResultSet rs = MySQL.execute("SELECT * FROM `billing` WHERE `appointments_appointment_id`='" + id + "' AND `patients_nic`='" + nic + "'");
+
+                        if (rs.next()) {
+                            billingId = rs.getInt("bill_id");
+
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(BillingAndClaimsManagement.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    if (result1) {
+                        System.out.println(String.valueOf(billingId));
+                        status = "Approved";
+                        String billingStatus = "Paid";
+
+                        MySQL.execute("INSERT INTO `insurance` (`insurance_company`,`claim_status`,`claim_amount`,`billing_bill_id`,`policy_number`,`policyHolderName`) VALUES ('" + companyName + "','" + status + "','" + amount + "','" + billingId + "','" + policyNumber + "','" + policyholderName + "')");
+                        MySQL.execute("UPDATE `billing` SET `status`='" + billingStatus + "' WHERE `bill_id`='" + billingId + "'");                        
+                    }
+                }
+
+            } catch (Exception ex) {
+                Logger.getLogger(BillingAndClaimsManagement.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -298,7 +333,7 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
             ResultSet rs = MySQL.execute("SELECT * FROM `appointments` WHERE `appointment_id`='" + appointmentId + "' ");
 
             if (rs.next()) {
-                id= rs.getInt("appointment_id");
+                id = rs.getInt("appointment_id");
                 jTextField1.setText(rs.getString("patients_nic"));
                 jComboBox1.setSelectedItem(rs.getString("type"));
             }
@@ -327,18 +362,17 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
             Claim directClaim = new Claim(nic, type, amount);
             boolean result3 = processor.processDirectPayment(directClaim);
             System.out.println(result3);
-            
-            if(result3){
-            String status = "Paid";
-            
+
+            if (result3) {
+                String status = "Paid";
+
                 try {
-                    MySQL.execute("INSERT INTO `billing` (`total_amount`,`status`,`appointments_appointment_id`,`patients_nic`) VALUES ('"+amount+"','"+status+"','"+id+"','"+nic+"')");
+                    MySQL.execute("INSERT INTO `billing` (`total_amount`,`status`,`appointments_appointment_id`,`patients_nic`) VALUES ('" + amount + "','" + status + "','" + id + "','" + nic + "')");
                 } catch (Exception ex) {
                     Logger.getLogger(BillingAndClaimsManagement.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
-           
+
         }
 
 

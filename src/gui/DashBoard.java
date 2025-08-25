@@ -5,24 +5,51 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import model.AppContext;
 import model.StaffModel;
+import model.User;
 
 public class DashBoard extends javax.swing.JFrame {
+    
+    private User user;
 
     public DashBoard() {
         initComponents();
         addfirstpage();
+       user = AppContext.getInstance().getCurrentUser();
+
         
-     
+
+        if (user != null && "Doctor".equals(user.getRoleName())) {
+            loadDoctorInterface();
+        }
+        
+        if(user != null && "Admin".equals(user.getRoleName())){
+           loadAdminFeatures();
+        }
+    }
+    
+    private void loadAdminFeatures(){
+    
+       jButton2.setText("View Doctors Appointment");
+    }
+
+    private void loadDoctorInterface() {
+
+        jButton1.setText("View Patient Details");
+        jButton3.setVisible(user.canAccess("Appointment Scheduling an manage"));
+        jButton3.setVisible(user.canAccess("Appointment Scheduling an manage"));
+        jButton4.setVisible(user.canAccess("Billing & Payments"));
+        
     }
 
     private PatientManagementPanel patientPanel;
 
     private StaffModel staff;
     private String username;
-    
-    
-    private AppointmentSchedulingPanel   asp;
+
+    private AppointmentSchedulingPanel asp;
+    private StaffManagement staffManagement;
     private Testt t;
 
     public void setStaff(StaffModel staff) {
@@ -46,6 +73,7 @@ public class DashBoard extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         BodyPanel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -68,7 +96,7 @@ public class DashBoard extends javax.swing.JFrame {
         jButton2.setBackground(new java.awt.Color(0, 0, 0));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText(" Medical Records Management");
+        jButton2.setText("View Today Appointment");
 
         jButton3.setBackground(new java.awt.Color(0, 0, 0));
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -93,7 +121,17 @@ public class DashBoard extends javax.swing.JFrame {
         jButton5.setBackground(new java.awt.Color(0, 0, 0));
         jButton5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setText(" Billing & Payments");
+        jButton5.setText("Report Generated");
+
+        jButton6.setBackground(new java.awt.Color(0, 0, 0));
+        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(255, 255, 255));
+        jButton6.setText("Staff Management");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -104,6 +142,10 @@ public class DashBoard extends javax.swing.JFrame {
             .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,7 +160,9 @@ public class DashBoard extends javax.swing.JFrame {
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(346, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(292, Short.MAX_VALUE))
         );
 
         BodyPanel.setLayout(new java.awt.BorderLayout());
@@ -172,27 +216,27 @@ public class DashBoard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
         removeActivePanel();
-        
+
         if (patientPanel == null) {
             patientPanel = new PatientManagementPanel();
         }
-        
-           BodyPanel.add(patientPanel, BorderLayout.CENTER);
-            SwingUtilities.updateComponentTreeUI(BodyPanel);
-        
+
+        BodyPanel.add(patientPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(BodyPanel);
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         removeActivePanel();
-        
-        if(asp == null){
-         asp = new AppointmentSchedulingPanel();
+
+        if (asp == null) {
+            asp = new AppointmentSchedulingPanel();
         }
-        
-         BodyPanel.add(asp, BorderLayout.CENTER);
-            SwingUtilities.updateComponentTreeUI(BodyPanel);
+
+        BodyPanel.add(asp, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(BodyPanel);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -207,26 +251,36 @@ public class DashBoard extends javax.swing.JFrame {
 //            SwingUtilities.updateComponentTreeUI(BodyPanel);
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    
-     public void addfirstpage(){
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+         
+        removeActivePanel();
         
-           if (patientPanel == null) {
+        if(staffManagement == null){
+             staffManagement = new StaffManagement();
+          } 
+          
+          BodyPanel.add(staffManagement,BorderLayout.CENTER);
+           SwingUtilities.updateComponentTreeUI(BodyPanel);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    public void addfirstpage() {
+
+        if (patientPanel == null) {
             patientPanel = new PatientManagementPanel();
-        }   
-        
-          BodyPanel.add(patientPanel, BorderLayout.CENTER);
+        }
+
+        BodyPanel.add(patientPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(BodyPanel);
     }
-    
-    
-    public void removeActivePanel(){
-         Component[] components = BodyPanel.getComponents();
+
+    public void removeActivePanel() {
+        Component[] components = BodyPanel.getComponents();
         for (Component component : components) {
             BodyPanel.remove(component);
         }
         SwingUtilities.updateComponentTreeUI(BodyPanel);
     }
-  
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -251,10 +305,8 @@ public class DashBoard extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        
         FlatDarculaLaf.setup();
-        
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -270,6 +322,7 @@ public class DashBoard extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

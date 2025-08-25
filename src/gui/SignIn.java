@@ -6,8 +6,11 @@ import com.mysql.cj.jdbc.result.ResultSetFactory;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.AppContext;
 import model.MySQL;
 import model.StaffModel;
+import model.User;
+import patterns.Role;
 
 
 public class SignIn extends javax.swing.JFrame {
@@ -129,12 +132,22 @@ public class SignIn extends javax.swing.JFrame {
             System.out.println(password);
             
             try {
-                ResultSet resultset = MySQL.execute("SELECT * FROM `staff` WHERE `emial` = '"+username+"' AND `password` = '"+password+"'");
+                ResultSet resultset = MySQL.execute("SELECT * FROM `staff` WHERE `nic` = '"+username+"' AND `password` = '"+password+"'");
                 
                 
                if(resultset.next()){
-                StaffModel staff = new StaffModel(resultset.getString("first_name"), resultset.getString("last_name"), resultset.getString("role"), resultset.getString("department"), resultset.getString("emial"), resultset.getString("phone"), resultset.getString("created_at"), resultset.getString("updated_at"), resultset.getString("password"));
+                StaffModel staff = new StaffModel(resultset.getString("first_name"), resultset.getString("last_name"), resultset.getString("role"),resultset.getString("nic"), resultset.getString("phone"), resultset.getString("created_at"), resultset.getString("updated_at"), resultset.getString("password"));
             
+                
+                
+                
+                Role role = new Role(staff.getRole());
+                User user = new User(staff.getFirst_name(),role);
+                AppContext.getInstance().setCurrentUser(user);
+                
+                
+                
+                
             DashBoard dashboard = new DashBoard();
             dashboard.setStaff(staff);
             
