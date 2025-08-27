@@ -5,8 +5,12 @@
 package gui;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import model.MedicalReportModel;
+import model.MySQL;
 
 /**
  *
@@ -24,12 +28,16 @@ public class SingleDoctorAppointment extends javax.swing.JPanel {
     private String nic;
     private List<MedicalReportModel> reports;
     private String id;
+    private int appointmentId;
+    private DoctorAppointment panel;
     
-    void set(String nic,String mobile ,String gender){
+    void set(String nic,String mobile ,String gender,int appointmentId,DoctorAppointment panel){
     
            jLabel1.setText(nic);
            jLabel2.setText(mobile);
            jLabel3.setText(gender);
+           this.appointmentId = appointmentId;
+           this.panel = panel;
     }
     
     void setMedicalData(String nic,List<MedicalReportModel> reports,String id){
@@ -84,6 +92,11 @@ public class SingleDoctorAppointment extends javax.swing.JPanel {
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(0, 0, 0));
         jButton2.setText("Compleate");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -131,6 +144,24 @@ public class SingleDoctorAppointment extends javax.swing.JPanel {
             frame.setLocationRelativeTo(this);
             frame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            MySQL.execute("UPDATE `appointments` SET `status`='"+"Completed"+"' WHERE `appointment_id`='"+appointmentId+"'");
+            
+             JOptionPane.showMessageDialog(
+                            null,
+                            "Operation completed successfully!",
+                            "Success",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+             
+             panel.loadAppointment();
+            
+        } catch (Exception ex) {
+            Logger.getLogger(SingleDoctorAppointment.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

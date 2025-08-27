@@ -28,35 +28,34 @@ public class DoctorAppointment extends javax.swing.JPanel {
     /**
      * Creates new form DoctorAppointment
      */
+    private JScrollPane scrollPane;
+
     public DoctorAppointment() {
         initComponents();
-
+        scrollPane = new JScrollPane(jPanel1);
         loadAppointment();
     }
 
     void loadAppointment() {
-
+        jPanel1.removeAll();
         User currentUser = AppContext.getInstance().getCurrentUser();
-    
 
         try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `appointments` WHERE `doctor`='" + currentUser.getUsername() + "'");
+            ResultSet rs = MySQL.execute("SELECT * FROM `appointments` WHERE `doctor`='" + currentUser.getUsername() + "' AND `status`='" + "Scheduled" + "' ");
 
             jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.Y_AXIS));
 
             while (rs.next()) {
-                
-                    List<MedicalReportModel> reports = new ArrayList<>();
+
+                List<MedicalReportModel> reports = new ArrayList<>();
 
                 SingleDoctorAppointment panel = new SingleDoctorAppointment();
-                
-                ResultSet rs1 = MySQL.execute("SELECT * FROM `patients` WHERE `nic`='"+rs.getString("patients_nic") +"'");
-                
-                if(rs1.next()){
-                 panel.set(rs.getString("patients_nic"),rs1.getString("phone"),rs1.getString("gender"));
+
+                ResultSet rs1 = MySQL.execute("SELECT * FROM `patients` WHERE `nic`='" + rs.getString("patients_nic") + "'");
+
+                if (rs1.next()) {
+                    panel.set(rs.getString("patients_nic"), rs1.getString("phone"), rs1.getString("gender"), rs.getInt("appointment_id"), this);
                 }
-                
-               
 
                 ResultSet rs2 = MySQL.execute("SELECT * FROM `medical records` WHERE `patients_nic`='" + rs.getString("patients_nic") + "'");
 
@@ -81,10 +80,10 @@ public class DoctorAppointment extends javax.swing.JPanel {
                 jPanel1.add(panel);
                 jPanel1.add(Box.createVerticalStrut(10)); // gap
 
+                
             }
 
 // Wrap inside a JScrollPane
-            JScrollPane scrollPane = new JScrollPane(jPanel1);
             scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 // Set preferred size (e.g., 400x500) to prevent full-screen stretching
@@ -93,6 +92,10 @@ public class DoctorAppointment extends javax.swing.JPanel {
 // Use FlowLayout or another layout that respects preferred size
             setLayout(new FlowLayout());
             add(scrollPane);
+            
+            
+             jPanel1.revalidate(); // refresh UI
+            jPanel1.repaint();
 
         } catch (Exception ex) {
             Logger.getLogger(DoctorAppointment.class.getName()).log(Level.SEVERE, null, ex);
