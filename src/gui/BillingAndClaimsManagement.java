@@ -1,5 +1,6 @@
 package gui;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import java.sql.ResultSet;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -16,6 +17,8 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
         loadPaymentMethod();
         setInsuranceFieldsVisible(false);
         loadServicetype();
+        
+        jButton1.setVisible(false);
     }
 
     private int id;
@@ -320,6 +323,8 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
 
         boolean isInsurance = "Insurance".equals(jComboBox2.getSelectedItem());
         setInsuranceFieldsVisible(isInsurance);
+           jButton1.setVisible(isInsurance);
+           jButton2.setVisible(!isInsurance);
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -401,6 +406,8 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(BillingAndClaimsManagement.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        FlatDarkLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

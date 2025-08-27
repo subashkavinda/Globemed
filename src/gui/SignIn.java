@@ -142,14 +142,14 @@ public class SignIn extends javax.swing.JFrame {
                 
                 
                 Role role = new Role(staff.getRole());
-                User user = new User(staff.getFirst_name(),role);
+                User user = new User(staff.getFirst_name(),role,staff.getLast_name(),staff.getEmail(),staff.getPhone(),staff.getPassword());
                 AppContext.getInstance().setCurrentUser(user);
                 
                 
                 
                 
             DashBoard dashboard = new DashBoard();
-            dashboard.setStaff(staff);
+            
             
             dashboard.setVisible(true);
             this.dispose();

@@ -3,7 +3,9 @@ package gui;
 import com.mysql.cj.x.protobuf.MysqlxNotice.Warning.Level;
 import java.awt.BorderLayout;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
@@ -18,9 +20,9 @@ import model.User;
 
 interface PatientData {
 
-    PatientModel getDetails();
+ PatientModel getDetails();
     String getPatientId();
-    MedicalReportModel getMedicalInfo();
+    List<MedicalReportModel> getMedicalInfo();
 
 }
 
@@ -34,26 +36,22 @@ class BasicPatientData implements PatientData {
 
     @Override
     public PatientModel getDetails() {
-
         return patient;
     }
 
     @Override
     public String getPatientId() {
-
         return patient.getNic();
     }
 
     @Override
-    public MedicalReportModel getMedicalInfo() {
-
-        return null;
+    public List<MedicalReportModel> getMedicalInfo() {
+        return new ArrayList<>(); // empty list by default
     }
 }
 
 abstract class PatientDecorator implements PatientData {
-
-    protected PatientData patientData;
+ protected PatientData patientData;
 
     public PatientDecorator(PatientData patientData) {
         this.patientData = patientData;
@@ -70,23 +68,29 @@ abstract class PatientDecorator implements PatientData {
     }
 
     @Override
-    public MedicalReportModel getMedicalInfo() {
+    public List<MedicalReportModel> getMedicalInfo() {
         return patientData.getMedicalInfo();
     }
 }
 
 class MedicalRecordDecorator extends PatientDecorator {
 
-    private MedicalReportModel medicalRecord;
+   private List<MedicalReportModel> medicalRecords = new ArrayList<>();
 
     public MedicalRecordDecorator(PatientData patientData, MedicalReportModel medicalRecord) {
         super(patientData);
-        this.medicalRecord = medicalRecord;
+        this.medicalRecords.add(medicalRecord);
+    }
+
+    public void addMedicalRecord(MedicalReportModel record) {
+        medicalRecords.add(record);
     }
 
     @Override
-    public MedicalReportModel getMedicalInfo() {
-        return medicalRecord;
+    public List<MedicalReportModel> getMedicalInfo() {
+        List<MedicalReportModel> combined = new ArrayList<>(super.getMedicalInfo());
+        combined.addAll(medicalRecords);
+        return combined;
     }
 }
 
@@ -97,6 +101,8 @@ public class PatientManagementPanel extends javax.swing.JPanel {
     private Map<String, PatientData> patients = new HashMap<>();
     private DefaultTableModel model;
     private User currentUser;
+    
+    
 
     public PatientManagementPanel() {
         initComponents();
@@ -105,16 +111,20 @@ public class PatientManagementPanel extends javax.swing.JPanel {
 
       
       currentUser = AppContext.getInstance().getCurrentUser();
-         System.out.println(currentUser.getRoleName());
+      
+      
         if (currentUser != null && "Doctor".equals(currentUser.getRoleName())) {
             loadDoctorFeatures();
         }
+        
+        
+        jPanel1.setVisible(currentUser.canAccess("Enter Patient Details"));
+        jButton1.setVisible(currentUser.canAccess("Add Patient"));
+        jButton3.setVisible(currentUser.canAccess("Update Patient"));
     }
     
     private void loadDoctorFeatures(){
-         jPanel1.setVisible(currentUser.canAccess("patient management"));
-         jButton1.setVisible(currentUser.canAccess("Add patient"));
-         jButton3.setVisible(currentUser.canAccess("Update User"));
+        
          
     }
 
@@ -148,34 +158,54 @@ public class PatientManagementPanel extends javax.swing.JPanel {
         System.out.println("call");
 
     }
+    
+    
+    public void check(String nic,MedicalReportPanel panel){
+    loadPatientFromDb();
+   
+    
+      PatientData pd = patients.get(nic);
+      List<MedicalReportModel> reports = pd.getMedicalInfo();
+    panel.loadData(nic, reports);
+    
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     private void loadPatientFromDb() {
 
         try {
-
             model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
+            patients.clear();
 
             ResultSet rs = MySQL.execute("SELECT * FROM `patients`");
 
             while (rs.next()) {
-                PatientModel p = new PatientModel(rs.getString("first_name"),
+                PatientModel p = new PatientModel(
+                        rs.getString("first_name"),
                         rs.getString("last_name"),
                         rs.getString("dob"),
                         rs.getString("phone"),
                         rs.getString("nic"),
                         rs.getString("address"),
                         rs.getString("gender")
-                        
                 );
 
                 PatientData pp = new BasicPatientData(p);
-                patients.put(String.valueOf(p.getNic()), pp);
 
-                ResultSet rs2 = MySQL.execute("SELECT * FROM `medical records` WHERE patients_nic='" + p.getNic() + "'");
-                if (rs2.next()) {
-
-                    System.out.println("done done");
+                // Load all medical reports for patient
+                ResultSet rs2 = MySQL.execute("SELECT * FROM `medical records` WHERE patients_nic='" + p.getNic() + "'ORDER BY `created_at` ASC");
+                MedicalRecordDecorator decorator = null;
+                while (rs2.next()) {
                     MedicalReportModel m = new MedicalReportModel(
                             rs2.getString("diagnosis"),
                             rs2.getString("treatment_plan"),
@@ -186,24 +216,30 @@ public class PatientManagementPanel extends javax.swing.JPanel {
                             rs2.getString("patients_nic"),
                             rs2.getInt("record_id")
                     );
-                    pp = new MedicalRecordDecorator(pp, m);
-                   patients.put(String.valueOf(p.getNic()), pp);
+
+                    if (decorator == null) {
+                        decorator = new MedicalRecordDecorator(pp, m);
+                    } else {
+                        decorator.addMedicalRecord(m);
+                    }
+                }
+                if (decorator != null) {
+                    pp = decorator;
                 }
 
-                Vector v = new Vector();
+                patients.put(p.getNic(), pp);
 
-                v.add(rs.getString("nic"));
-                v.add(rs.getString("first_name"));
-                v.add(rs.getString("last_name"));
-                v.add(rs.getString("dob"));
-                v.add(rs.getString("phone"));
-                v.add(rs.getString("address"));
-                v.add(rs.getString("gender"));
+                Vector<String> v = new Vector<>();
+                v.add(p.getNic());
+                v.add(p.getFirstName());
+                v.add(p.getLastName());
+                v.add(p.getDob());
+                v.add(p.getMobile());
+                v.add(p.getAddress());
+                v.add(p.getGender());
 
                 model.addRow(v);
-
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -595,46 +631,23 @@ public class PatientManagementPanel extends javax.swing.JPanel {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
 
-        int row = jTable1.getSelectedRow();
+         int row = jTable1.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please Select Patient", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-        if (row != -1) {
+        String nic = jTable1.getValueAt(row, 0).toString();
+        PatientData pd = patients.get(nic);
 
-            String nic = jTable1.getValueAt(row, 0).toString();
-            PatientData pd = patients.get(nic);
-            
-            PatientModel patient = pd.getDetails();
-
-            if (pd != null) {
-                MedicalReportModel report = pd.getMedicalInfo();
-                if (report != null) {
-                    System.out.println(report.getDiagnosis());
-                    
-                JFrame frame = new JFrame("Medical Report for" + nic);
-                MedicalReportPanel ppp = new MedicalReportPanel(nic, report,patient.getNic());
-                frame.add(ppp);
-                frame.pack();
-                frame.setLocationRelativeTo(this);
-                frame.setVisible(true);
-                    
-//                     reportPanel.loadData(nic, report);
-                } else {
-                    
-                    JFrame frame = new JFrame("Medical Report for " + nic);
-                MedicalReportPanel ppp = new MedicalReportPanel(nic, report,patient.getNic());
-                frame.add(ppp);
-                frame.pack();
-                frame.setLocationRelativeTo(this);
-                frame.setVisible(true);
-                    
-                    
-                    System.out.println("No medical record found for this patient.");
-                }
-            }else{
-                System.out.println("not found user");
-            }
-
-        } else {
-              JOptionPane.showMessageDialog(this, "Please Select Patient", "Warning", JOptionPane.WARNING_MESSAGE);
+        if (pd != null) {
+            List<MedicalReportModel> reports = pd.getMedicalInfo();
+            JFrame frame = new JFrame("Medical Reports for " + nic);
+            MedicalReportPanel panel = new MedicalReportPanel(nic, reports, pd.getPatientId());
+            frame.add(panel);
+            frame.pack();
+            frame.setLocationRelativeTo(this);
+            frame.setVisible(true);
         }
 
 

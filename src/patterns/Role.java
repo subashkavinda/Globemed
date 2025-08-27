@@ -15,12 +15,31 @@ public class Role implements RoleComponent {
         if (name.equalsIgnoreCase("Doctor")) {
             permissions.add("view_patient");
             permissions.add("write_prescription");
+            permissions.add("Update Medical Report");
+            permissions.add("View Today Appointment");
+            permissions.add("Add New Medical Report");
         } else if (name.equalsIgnoreCase("Nurse")) {
             permissions.add("view_patient");
             permissions.add("update_vitals");
+            permissions.add("Appointment Scheduling an manage");
+            permissions.add("Enter Patient Details");
+            permissions.add("Add Patient");
+            permissions.add("Update Patient");
         } else if (name.equalsIgnoreCase("Admin")) {
             permissions.add("manage_users");
             permissions.add("view_reports");
+            permissions.add("Genarate Report");
+            permissions.add("Manage Staff");
+            permissions.add("Appointment Scheduling an manage");
+            permissions.add("Billing & Payments");
+            permissions.add("Enter Patient Details");
+            permissions.add("View Doctors Appointments");
+             permissions.add("Enter Patient Details");
+               permissions.add("Add Patient");
+                permissions.add("Update Patient");
+        } else if (name.equalsIgnoreCase("Pharmacist")) {
+            permissions.add("view_patient");
+            permissions.add("Billing & Payments");
         }
     }
 
