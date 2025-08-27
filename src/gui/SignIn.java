@@ -1,4 +1,3 @@
-
 package gui;
 
 import com.formdev.flatlaf.FlatDarkLaf;
@@ -12,15 +11,12 @@ import model.StaffModel;
 import model.User;
 import patterns.Role;
 
-
 public class SignIn extends javax.swing.JFrame {
 
-  
     public SignIn() {
         initComponents();
     }
 
- 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -118,56 +114,41 @@ public class SignIn extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-                
+
         String username = loginUsername.getText();
-        String password =loginPassword.getText();
-        
-       
-        if(username.isEmpty()){
+        String password = loginPassword.getText();
+
+        if (username.isEmpty()) {
             System.out.println("plaese enter username");
-        }else if(password.isEmpty()){
+        } else if (password.isEmpty()) {
             System.out.println("please enter password");
-        }else{
+        } else {
             System.out.println(username);
             System.out.println(password);
-            
+
             try {
-                ResultSet resultset = MySQL.execute("SELECT * FROM `staff` WHERE `nic` = '"+username+"' AND `password` = '"+password+"'");
-                
-                
-               if(resultset.next()){
-                StaffModel staff = new StaffModel(resultset.getString("first_name"), resultset.getString("last_name"), resultset.getString("role"),resultset.getString("nic"), resultset.getString("phone"), resultset.getString("created_at"), resultset.getString("updated_at"), resultset.getString("password"));
-            
-                
-                
-                
-                Role role = new Role(staff.getRole());
-                User user = new User(staff.getFirst_name(),role,staff.getLast_name(),staff.getEmail(),staff.getPhone(),staff.getPassword());
-                AppContext.getInstance().setCurrentUser(user);
-                
-                
-                
-                
-            DashBoard dashboard = new DashBoard();
-            
-            
-            dashboard.setVisible(true);
-            this.dispose();
-               }
-            
-           
-                
-                
+                ResultSet resultset = MySQL.execute("SELECT * FROM `staff` WHERE `nic` = '" + username + "' AND `password` = '" + password + "'");
+
+                if (resultset.next()) {
+                    StaffModel staff = new StaffModel(resultset.getString("first_name"), resultset.getString("last_name"), resultset.getString("role"), resultset.getString("nic"), resultset.getString("phone"), resultset.getString("created_at"), resultset.getString("updated_at"), resultset.getString("password"));
+
+                    Role role = new Role(staff.getRole());
+                    User user = new User(staff.getFirst_name(), role, staff.getLast_name(), staff.getEmail(), staff.getPhone(), staff.getPassword());
+                    AppContext.getInstance().setCurrentUser(user);
+
+                    DashBoard dashboard = new DashBoard();
+
+                    dashboard.setVisible(true);
+                    this.dispose();
+                }
+
             } catch (Exception ex) {
                 Logger.getLogger(SignIn.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            
-           
-            
+
         }
-        
-        
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -196,7 +177,7 @@ public class SignIn extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(SignIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         FlatDarkLaf.setup();
 
         /* Create and display the form */

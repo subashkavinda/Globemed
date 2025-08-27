@@ -285,15 +285,10 @@ public class DashBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-//          removeActivePanel();
-//          
-//          if(t == null){
-//          
-//            t = new Testt();
-//          }
-//          
-//           BodyPanel.add(t, BorderLayout.CENTER);
-//            SwingUtilities.updateComponentTreeUI(BodyPanel);
+
+        BillingAndClaimsManagement bill = new BillingAndClaimsManagement();
+        bill.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        bill.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed

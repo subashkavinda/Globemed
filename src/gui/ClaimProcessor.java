@@ -95,7 +95,7 @@ class ApprovalHandler extends ClaimHandler {
         if (amount > 5000) {
             System.out.println("⚠️ High amount - needs manager approval");
             // Simulate manager approval
-            if (hasManagerApproval()) {
+            if (hasManagerApproval(claim)) {
                 claim.setStatus("APPROVED");
                 System.out.println("✅ Manager approved");
                 return true;
@@ -110,7 +110,10 @@ class ApprovalHandler extends ClaimHandler {
         return true;
     }
     
-    private boolean hasManagerApproval() {
+    private boolean hasManagerApproval(Claim claim) {
+        
+        
+        
         return true; // Simulate approval
     }
 }
