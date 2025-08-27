@@ -18,6 +18,8 @@ public class Role implements RoleComponent {
             permissions.add("Update Medical Report");
             permissions.add("View Today Appointment");
             permissions.add("Add New Medical Report");
+            permissions.add("Enter medical Details");
+            
         } else if (name.equalsIgnoreCase("Nurse")) {
             permissions.add("view_patient");
             permissions.add("update_vitals");
