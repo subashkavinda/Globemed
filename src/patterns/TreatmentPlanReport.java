@@ -18,12 +18,13 @@ public class TreatmentPlanReport implements ReportVisitor {
     public void visit(Patient patient) {
         try {
             Map<String, Object> params = new HashMap<>();
-            params.put("patientName", patient.getName());
-            params.put("diagnosis", patient.getDiagnosis());
-            params.put("treatmentPlan", patient.getTreatmentPlan());
+            params.put("Parameter1", patient.getName());
+            params.put("Parameter2", patient.getDiagnosis());
+            params.put("Parameter3", patient.getTreatmentPlan());
 
-            JasperReport jasperReport = JasperCompileManager.compileReport("reports/treatmentPlan.jrxml");
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource());
+           String path = "src/reports/TreatmentReport.jasper";
+           
+            JasperPrint jasperPrint = JasperFillManager.fillReport(path, params, new JREmptyDataSource());
             JasperViewer.viewReport(jasperPrint, false);
         } catch (Exception e) {
             e.printStackTrace();

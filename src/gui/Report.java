@@ -4,6 +4,14 @@
  */
 package gui;
 
+import model.MySQL;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Patient;
+import model.PatientModel;
+import patterns.TreatmentPlanReport;
+
 /**
  *
  * @author subash kavinda
@@ -16,6 +24,9 @@ public class Report extends javax.swing.JPanel {
     public Report() {
         initComponents();
     }
+    
+   private String diagnosis;
+   private String treatment;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -38,12 +49,21 @@ public class Report extends javax.swing.JPanel {
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setText("Add User");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setText("Subash Kavinda");
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jButton2.setText("Treatment Summary.");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jButton3.setText("Diagnosis Report.");
@@ -90,6 +110,60 @@ public class Report extends javax.swing.JPanel {
                 .addContainerGap(164, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+          String nic = jTextField1.getText();
+          
+          if(nic.isEmpty()){
+          
+              System.out.println("Please enter Patient Nic");
+          
+          }else{
+            try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `patients` WHERE `nic`='"+nic+"'");
+            
+            if(rs.next()){
+                
+                String firstname= rs.getString("first_name");
+                String lastname= rs.getString("last_name");
+            
+                jLabel2.setText(firstname +lastname);
+               
+                
+                ResultSet rs2 = MySQL.execute("SELECT * FROM `medical records` WHERE `patients_nic`='"+nic+"' ORDER BY `created_at` DESC LIMIT 1 ");
+                
+                if(rs2.next()){
+                
+                    diagnosis = rs2.getString("diagnosis");
+                    treatment = rs2.getString("treatment_plan");
+                
+                }
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          }
+          
+      
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+  
+        String patientName = jLabel2.getText();
+        
+        
+        if(patientName.isEmpty()){
+        
+            System.out.println("Please Add PAtient ");
+        }
+        
+        Patient p = new Patient(patientName,diagnosis , treatment);
+        
+        p.accept(new TreatmentPlanReport());
+        
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -63,6 +63,7 @@ public class DashBoard extends javax.swing.JFrame {
     private AppointmentSchedulingPanel asp;
     private StaffManagement staffManagement;
     private DoctorAppointment doctorAppointment;
+    private Report report;
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -346,7 +347,13 @@ public class DashBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-          
+                removeActivePanel();
+        if (report == null) {
+            report = new Report();
+        }
+
+        BodyPanel.add(report, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(BodyPanel);  
     }//GEN-LAST:event_jButton5ActionPerformed
 
     public void addfirstpage() {
