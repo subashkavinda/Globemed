@@ -123,7 +123,7 @@ public class DashBoard extends javax.swing.JFrame {
         jButton4.setBackground(new java.awt.Color(0, 0, 0));
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("Billing & Payments");
+        jButton4.setText("Billing & Insurence");
         jButton4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 255, 0)));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,6 +136,11 @@ public class DashBoard extends javax.swing.JFrame {
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("Report Generated");
         jButton5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 255, 0)));
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setBackground(new java.awt.Color(0, 0, 0));
         jButton6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -286,9 +291,21 @@ public class DashBoard extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
-        BillingAndClaimsManagement bill = new BillingAndClaimsManagement();
+        if("Admin".equals(user.getRoleName())){
+        
+         BillingAndClaimsManagement bill = new BillingAndClaimsManagement();
         bill.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         bill.setVisible(true);
+        }else{
+        
+        MedicationBilling bill = new MedicationBilling();
+        bill.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        bill.setVisible(true);
+        
+        }
+        
+        
+       
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -327,6 +344,10 @@ public class DashBoard extends javax.swing.JFrame {
         BodyPanel.add(doctorAppointment, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(BodyPanel);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+          
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     public void addfirstpage() {
 
