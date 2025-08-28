@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Patient;
 import model.PatientModel;
+import patterns.DiagnosisReport;
 import patterns.TreatmentPlanReport;
 
 /**
@@ -67,6 +68,11 @@ public class Report extends javax.swing.JPanel {
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jButton3.setText("Diagnosis Report.");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -155,7 +161,7 @@ public class Report extends javax.swing.JPanel {
         
         if(patientName.isEmpty()){
         
-            System.out.println("Please Add PAtient ");
+            System.out.println("Please Add Patient ");
         }
         
         Patient p = new Patient(patientName,diagnosis , treatment);
@@ -164,6 +170,25 @@ public class Report extends javax.swing.JPanel {
         
         
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+          
+         String patientName = jLabel2.getText();
+        
+        
+        if(patientName.isEmpty()){
+        
+            System.out.println("Please Add Patient ");
+        }
+        
+        Patient p = new Patient(patientName,diagnosis ,  "✓ Take medications as prescribed\n" +
+                        "✓ Monitor blood pressure daily\n" +
+                        "✓ Check blood sugar twice weekly\n" +
+                        "✓ Low-sodium diet (under 2000mg/day)\n" +
+                        "✓ Exercise 30 minutes, 3x per week");
+        
+        p.accept(new DiagnosisReport());
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

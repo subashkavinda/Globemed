@@ -27,13 +27,15 @@ public class FinancialReport implements ReportVisitor{
 
         try {
             Map<String, Object> params = new HashMap<>();
-            params.put("patientName", financial.getPatientName());
-            params.put("appointmentId", financial.getAppointmentId());
-            params.put("serviceType", financial.getServiceType());
-            params.put("amount", financial.getAmount());
+            params.put("Parameter1", financial.getPatientName());
+            params.put("Parameter2", financial.getPatientMobile());
+            params.put("Parameter3", financial.getPatientDob());
+            params.put("Parameter4",String.valueOf( financial.getAppointmentId()));
+            params.put("Parameter5", financial.getServiceType());
+            params.put("Parameter6",String.valueOf( financial.getAmount()));
 
-            JasperReport jasperReport = JasperCompileManager.compileReport("reports/financialReport.jrxml");
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource());
+             String path = "src/reports/DirectPayment.jasper";
+            JasperPrint jasperPrint = JasperFillManager.fillReport(path, params, new JREmptyDataSource());
             JasperViewer.viewReport(jasperPrint, false);
         } catch (Exception e) {
             e.printStackTrace();

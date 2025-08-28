@@ -6,22 +6,28 @@ import patterns.ReportVisitor;
 
 public class Financial {
      private String patientName;
-    private String appointmentId;
+    
+    private int appointmentId;
     private String serviceType;
     private double amount;
+    
+    private String patientMobile;
+    private String patientDob;
 
-    public Financial(String patientName, String appointmentId, String serviceType, double amount) {
+    public Financial(String patientName, int appointmentId, String serviceType, double amount,String patientMobile,String patientDob) {
         this.patientName = patientName;
         this.appointmentId = appointmentId;
         this.serviceType = serviceType;
         this.amount = amount;
+        this.patientMobile =patientMobile;
+        this.patientDob = patientDob;
     }
 
     public String getPatientName() {
         return patientName;
     }
 
-    public String getAppointmentId() {
+    public int getAppointmentId() {
         return appointmentId;
     }
 
@@ -36,4 +42,15 @@ public class Financial {
     public void accept(ReportVisitor visitor) {
         visitor.visit(this);
     }
+
+    public String getPatientMobile() {
+        return patientMobile;
+    }
+
+    public String getPatientDob() {
+        return patientDob;
+    }
+    
+    
+    
 }

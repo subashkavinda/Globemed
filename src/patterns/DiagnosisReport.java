@@ -20,17 +20,17 @@ public class DiagnosisReport implements ReportVisitor{
    
     try {
             Map<String, Object> params = new HashMap<>();
-            params.put("patientName", patient.getName());
-            params.put("diagnosis", patient.getDiagnosis());
-            params.put("recommendations",
+            params.put("Parameter1", patient.getName());
+            params.put("Parameter2", patient.getDiagnosis());
+            params.put("Parameter3",
                     "• Continue current medications\n" +
                     "• Maintain healthy diet\n" +
                     "• Regular exercise\n" +
                     "• Monitor blood sugar\n" +
                     "• Follow-up in 6 weeks");
 
-            JasperReport jasperReport = JasperCompileManager.compileReport("reports/diagnosisReport.jrxml");
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource());
+                String path = "src/reports/Diagnosis.jasper";
+            JasperPrint jasperPrint = JasperFillManager.fillReport(path, params, new JREmptyDataSource());
             JasperViewer.viewReport(jasperPrint, false);
         } catch (Exception e) {
             e.printStackTrace();

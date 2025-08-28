@@ -18,95 +18,81 @@ public class AppoinementDashBoardPanel extends javax.swing.JPanel {
 
     private JTable appointmentTable;
     private AppointmentMediator mediator;
-    
+
     private int id;
     private String status;
-    
-   
 
     public AppoinementDashBoardPanel() {
         initComponents();
         loadAppointments();
         loadCombobox();
     }
-    
-    private void reset(){
-       jTextField2.setText("");
-       jComboBox4.setSelectedIndex(0);
-       jComboBox1.setSelectedIndex(0);
-       jDateChooser1.setDate(null);
-       jComboBox3.setSelectedIndex(0);
-       jComboBox2.setSelectedIndex(0);
-       jTextField9.setText("");
-       jTextArea1.setText("");
-       
+
+    private void reset() {
+        jTextField2.setText("");
+        jComboBox4.setSelectedIndex(0);
+        jComboBox1.setSelectedIndex(0);
+        jDateChooser1.setDate(null);
+        jComboBox3.setSelectedIndex(0);
+        jComboBox2.setSelectedIndex(0);
+        jTextField9.setText("");
+        jTextArea1.setText("");
+
     }
-    
-    
-    private void loadCombobox(){
-    
-       DefaultComboBoxModel speModel = (DefaultComboBoxModel) jComboBox4.getModel();
-       speModel.removeAllElements();
-       
-       Vector v = new Vector();
-       v.add("Select");
-       v.add("Cardiology");
-       v.add("Neurology");
-       v.add("Orthopedics");
-       v.add("General Practice");
-      
-       speModel.addAll(v);
-       jComboBox4.setSelectedIndex(0);
-       
-       
+
+    private void loadCombobox() {
+
+        DefaultComboBoxModel speModel = (DefaultComboBoxModel) jComboBox4.getModel();
+        speModel.removeAllElements();
+
+        Vector v = new Vector();
+        v.add("Select");
+        v.add("Cardiology");
+        v.add("Neurology");
+        v.add("Orthopedics");
+        v.add("General Practice");
+
+        speModel.addAll(v);
+        jComboBox4.setSelectedIndex(0);
+
         DefaultComboBoxModel doctorModel = (DefaultComboBoxModel) jComboBox1.getModel();
-       doctorModel.removeAllElements();
-       
-       Vector v1 = new Vector();
-       v1.add("Select");
-       v1.add("kavindu");
-       v1.add("nimal");
-       v1.add("sanath");
-     
-      
-       doctorModel.addAll(v1);
-       jComboBox1.setSelectedIndex(0);
-       
-       
-       
-       
-       DefaultComboBoxModel facilityModel = (DefaultComboBoxModel) jComboBox3.getModel();
-       facilityModel.removeAllElements();
-       
-       Vector v2 = new Vector();
-       v2.add("Select");
-       v2.add("Colombo");
-       v2.add("Kurunegala");
-       v2.add("Kandy");
-       v2.add("Jaffna");
-     
-      
-       facilityModel.addAll(v2);
-       jComboBox3.setSelectedIndex(0);
-    
-       
-       
-       
-          DefaultComboBoxModel typeModel = (DefaultComboBoxModel) jComboBox2.getModel();
-       typeModel.removeAllElements();
-       
-       Vector v3 = new Vector();
-       v3.add("Select");
-       v3.add("consultation");
-       v3.add("surgery");
-       v3.add("diagnostic");
-       v3.add("follow up");
-     
-      
-       typeModel.addAll(v3);
-       jComboBox2.setSelectedIndex(0);
+        doctorModel.removeAllElements();
+
+        Vector v1 = new Vector();
+        v1.add("Select");
+        v1.add("kavindu");
+        v1.add("nimal");
+        v1.add("sanath");
+
+        doctorModel.addAll(v1);
+        jComboBox1.setSelectedIndex(0);
+
+        DefaultComboBoxModel facilityModel = (DefaultComboBoxModel) jComboBox3.getModel();
+        facilityModel.removeAllElements();
+
+        Vector v2 = new Vector();
+        v2.add("Select");
+        v2.add("Colombo");
+        v2.add("Kurunegala");
+        v2.add("Kandy");
+        v2.add("Jaffna");
+
+        facilityModel.addAll(v2);
+        jComboBox3.setSelectedIndex(0);
+
+        DefaultComboBoxModel typeModel = (DefaultComboBoxModel) jComboBox2.getModel();
+        typeModel.removeAllElements();
+
+        Vector v3 = new Vector();
+        v3.add("Select");
+        v3.add("consultation");
+        v3.add("surgery");
+        v3.add("diagnostic");
+        v3.add("follow up");
+
+        typeModel.addAll(v3);
+        jComboBox2.setSelectedIndex(0);
     }
-    
 
     public void setMediator(AppointmentMediator mediator) {
         this.mediator = (AppointmentMediator) mediator;
@@ -137,7 +123,6 @@ public class AppoinementDashBoardPanel extends javax.swing.JPanel {
                 row.add(rs.getString("notes"));
                 row.add(rs.getString("status"));
                 row.add(rs.getString("action"));
-                
 
                 model.addRow(row);
             }
@@ -464,10 +449,10 @@ public class AppoinementDashBoardPanel extends javax.swing.JPanel {
 
         try {
             int nic = Integer.parseInt(text);
-            
-          ResultSet rs = MySQL.execute("SELECT * FROM `appointments` WHERE `patients_nic`='"+nic+"'");
-          
-           DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+            ResultSet rs = MySQL.execute("SELECT * FROM `appointments` WHERE `patients_nic`='" + nic + "'");
+
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
 
             while (rs.next()) {
@@ -488,9 +473,7 @@ public class AppoinementDashBoardPanel extends javax.swing.JPanel {
 
                 model.addRow(row);
             }
-            
-            
-           
+
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "NIC must be a valid number.");
         } catch (Exception ex) {
@@ -503,100 +486,92 @@ public class AppoinementDashBoardPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-            if(evt.getClickCount() == 2){
-                  int row = jTable1.getSelectedRow();
-                  
-                  
-                   id = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
-                   
-                  String nic = jTable1.getValueAt(row, 1).toString();
-                  String doctor = jTable1.getValueAt(row, 2).toString();
-                  String facility = jTable1.getValueAt(row, 3).toString();
-                  String d = jTable1.getValueAt(row, 4).toString();
-                  
-                  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                  Date da;
-                try {
-                    da = sdf.parse(d);
-                     jDateChooser1.setDate(da);
-                } catch (ParseException ex) {
-                    Logger.getLogger(AppoinementDashBoardPanel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                  
-                  
-                  
-                  String time = jTable1.getValueAt(row, 5).toString();
-                  String spe = jTable1.getValueAt(row, 6).toString();
-                  String type = jTable1.getValueAt(row, 7).toString();
-                  String note = jTable1.getValueAt(row, 8).toString();
-                 status = jTable1.getValueAt(row, 9).toString();
-                  
-                
-                  
-                  System.out.println(id);
-                  System.out.println(status);
-                  
-                  jTextField2.setText(nic);
-                  jComboBox4.setSelectedItem(spe);
-                  jComboBox1.setSelectedItem(doctor);
-                 
-                  jComboBox3.setSelectedItem(facility);
-                  jComboBox2.setSelectedItem(type);
-                  jTextField9.setText(time);
-                  jTextArea1.setText(note);
+        if (evt.getClickCount() == 2) {
+            int row = jTable1.getSelectedRow();
+
+            id = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
+
+            String nic = jTable1.getValueAt(row, 1).toString();
+            String doctor = jTable1.getValueAt(row, 2).toString();
+            String facility = jTable1.getValueAt(row, 3).toString();
+            String d = jTable1.getValueAt(row, 4).toString();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date da;
+            try {
+                da = sdf.parse(d);
+                jDateChooser1.setDate(da);
+            } catch (ParseException ex) {
+                Logger.getLogger(AppoinementDashBoardPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            String time = jTable1.getValueAt(row, 5).toString();
+            String spe = jTable1.getValueAt(row, 6).toString();
+            String type = jTable1.getValueAt(row, 7).toString();
+            String note = jTable1.getValueAt(row, 8).toString();
+            status = jTable1.getValueAt(row, 9).toString();
+
+            System.out.println(id);
+            System.out.println(status);
+
+            jTextField2.setText(nic);
+            jComboBox4.setSelectedItem(spe);
+            jComboBox1.setSelectedItem(doctor);
+
+            jComboBox3.setSelectedItem(facility);
+            jComboBox2.setSelectedItem(type);
+            jTextField9.setText(time);
+            jTextArea1.setText(note);
+        }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-         timePicker1.showPopup(this, 100, 100);
+        timePicker1.showPopup(this, 100, 100);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jTable1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jTable1AncestorAdded
-                    // TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_jTable1AncestorAdded
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
-                  int nic = Integer.parseInt(jTextField2.getText());
-                  String spe = jComboBox4.getSelectedItem().toString();
-                  String doctor = jComboBox1.getSelectedItem().toString();
-                  
-                  Date d = jDateChooser1.getDate();
-                  
-                  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                  String date = sdf.format(d);
-                  
-                  String time = jTextField9.getText();
-                  String facility = jComboBox3.getSelectedItem().toString();
-                  String type = jComboBox2.getSelectedItem().toString();
-                  String note = jTextArea1.getText();
-                  
-                  
-        
+
+        int nic = Integer.parseInt(jTextField2.getText());
+        String spe = jComboBox4.getSelectedItem().toString();
+        String doctor = jComboBox1.getSelectedItem().toString();
+
+        Date d = jDateChooser1.getDate();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(d);
+
+        String time = jTextField9.getText();
+        String facility = jComboBox3.getSelectedItem().toString();
+        String type = jComboBox2.getSelectedItem().toString();
+        String note = jTextArea1.getText();
+
         AppoinmentModel appoitment = new AppoinmentModel(date, status, note, nic, doctor, type, facility, "view", time, spe);
-        
+
         mediator.updateAppointment(appoitment, id);
-        
-      //  mediator.updateAppointment(appoitment);
-        
-        
+
+        //  mediator.updateAppointment(appoitment);
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-         int result = JOptionPane.showConfirmDialog(
-                        this,
-                        "Are you sure you want to cancel?",
-                        "Confirm Cancel",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE
-                );
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to cancel?",
+                "Confirm Cancel",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
 
-                if (result == JOptionPane.YES_OPTION) {
-                    mediator.cancelAppointment(id);
-                    loadAppointments();
-                    reset();
-                }
-            
+        if (result == JOptionPane.YES_OPTION) {
+            mediator.cancelAppointment(id);
+            loadAppointments();
+            reset();
+        }
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
 

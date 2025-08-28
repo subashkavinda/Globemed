@@ -278,7 +278,7 @@ public class MedicationBilling extends javax.swing.JFrame {
         JasperPrint jasperPrint;
         try {
             jasperPrint = JasperFillManager.fillReport(path, parameters, dataSourse);
-            JasperViewer.viewReport(jasperPrint);
+            JasperViewer.viewReport(jasperPrint,false);
         } catch (JRException ex) {
             Logger.getLogger(MedicationBilling.class.getName()).log(Level.SEVERE, null, ex);
         }
