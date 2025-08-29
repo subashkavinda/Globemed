@@ -43,7 +43,7 @@ class AppointmentScheduler implements AppointmentMediator {
              String date = appoinment.getDate();
              String status = appoinment.getStatus();
              String note = appoinment.getNotes();
-             int pid = appoinment.getPid();
+             String pid = appoinment.getPid();
              String doctor = appoinment.getDoctor();
              String type = appoinment.getType();
              String branch = appoinment.getBranch();
@@ -67,7 +67,7 @@ class AppointmentScheduler implements AppointmentMediator {
             
             System.out.println("Book Appointment Succesfull");
         } catch (Exception e) {
-            showMessage("⚠️ Error: " + e.getMessage());
+            showMessage("Error: " + e.getMessage());
         }
     }
 

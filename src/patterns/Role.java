@@ -19,6 +19,7 @@ public class Role implements RoleComponent {
             permissions.add("View Today Appointment");
             permissions.add("Add New Medical Report");
             permissions.add("Enter medical Details");
+            permissions.add("Genarate Report");
             
         } else if (name.equalsIgnoreCase("Nurse")) {
             permissions.add("view_patient");
@@ -27,6 +28,7 @@ public class Role implements RoleComponent {
             permissions.add("Enter Patient Details");
             permissions.add("Add Patient");
             permissions.add("Update Patient");
+              permissions.add("Genarate Report");
         } else if (name.equalsIgnoreCase("Admin")) {
             permissions.add("manage_users");
             permissions.add("view_reports");

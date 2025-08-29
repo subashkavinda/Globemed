@@ -9,7 +9,7 @@ public class AppoinmentModel {
     private String date;
     private String status;
     private String notes;
-    private int pid;
+    private String pid;
     private String doctor;
     private String type;
     private String branch;
@@ -18,7 +18,7 @@ public class AppoinmentModel {
     private String spe;
     
     
-    public AppoinmentModel(String date,String status, String note,int pid,String doctor,String type,String branch,String action,String time,String spe){
+    public AppoinmentModel(String date,String status, String note,String pid,String doctor,String type,String branch,String action,String time,String spe){
        this.date = date;
        this.status = status;
        this.notes = note;
@@ -56,7 +56,7 @@ public class AppoinmentModel {
 
    
 
-    public int getPid() {
+    public String getPid() {
         return pid;
     }
 

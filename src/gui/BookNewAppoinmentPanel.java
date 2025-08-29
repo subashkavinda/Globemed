@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,19 +17,25 @@ import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import model.MySQL;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class BookNewAppoinmentPanel extends javax.swing.JPanel {
-    
+
     private AppointmentMediator mediator;
-    
+    private String mobile;
+    private String gender;
+
     public BookNewAppoinmentPanel() {
         initComponents();
         loadCombobox();
-        
+
         jCheckBox1.setVisible(false);
         jCheckBox2.setVisible(false);
         jCheckBox3.setVisible(false);
-        
+
         datechooser.getDateEditor().addPropertyChangeListener("date", new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -39,11 +47,11 @@ public class BookNewAppoinmentPanel extends javax.swing.JPanel {
                 }
             }
         });
-        
+
     }
-    
+
     void reset() {
-        
+
         patientf.setText("");
         specombo.setSelectedItem("Any");
         doctorcombo.setSelectedItem("Select Doctor");
@@ -53,69 +61,69 @@ public class BookNewAppoinmentPanel extends javax.swing.JPanel {
         typecombo.setSelectedItem("Select");
         note.setText("");
         jLabel3.setText("");
-        
+
     }
-    
+
     private void loadCombobox() {
-        
+
         DefaultComboBoxModel doctor = (DefaultComboBoxModel) doctorcombo.getModel();
         doctor.removeAllElements();
-        
+
         Vector v = new Vector();
         v.add("Select Doctor");
         v.add("kavindu");
         v.add("nimal");
         v.add("sanath");
-        
+
         doctor.addAll(v);
         doctorcombo.setSelectedIndex(0);
-        
+
         DefaultComboBoxModel spe = (DefaultComboBoxModel) specombo.getModel();
         spe.removeAllElements();
-        
+
         Vector v1 = new Vector();
         v1.add("Any");
         v1.add("Cardiology");
         v1.add("Neurology");
         v1.add("Orthopedics");
         v1.add("General Practice");
-        
+
         spe.addAll(v1);
         specombo.setSelectedIndex(0);
-        
+
         DefaultComboBoxModel branch = (DefaultComboBoxModel) branchcombo.getModel();
         branch.removeAllElements();
-        
+
         Vector v3 = new Vector();
         v3.add("Select");
         v3.add("Colombo");
         v3.add("Kurunegala");
         v3.add("Kandy");
         v3.add("Jaffna");
-        
+
         branch.addAll(v3);
         branchcombo.setSelectedIndex(0);
-        
+
         DefaultComboBoxModel type = (DefaultComboBoxModel) typecombo.getModel();
         type.removeAllElements();
-        
+
         Vector v4 = new Vector();
         v4.add("Select");
         v4.add("consultation");
         v4.add("surgery");
         v4.add("diagnostic");
         v4.add("follow up");
-        
+
         type.addAll(v4);
         typecombo.setSelectedIndex(0);
-        
+
     }
-    
+
     public void setMediator(AppointmentMediator mediator) {
         this.mediator = mediator;
         System.out.println("book eke mediator set");
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -137,8 +145,6 @@ public class BookNewAppoinmentPanel extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         datechooser = new com.toedter.calendar.JDateChooser();
         jLabel8 = new javax.swing.JLabel();
-        txt = new javax.swing.JFormattedTextField();
-        jButton2 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         typecombo = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
@@ -148,8 +154,6 @@ public class BookNewAppoinmentPanel extends javax.swing.JPanel {
         jCheckBox1 = new javax.swing.JCheckBox();
         jCheckBox2 = new javax.swing.JCheckBox();
         jCheckBox3 = new javax.swing.JCheckBox();
-
-        timePicker2.setDisplayText(txt);
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -199,13 +203,6 @@ public class BookNewAppoinmentPanel extends javax.swing.JPanel {
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel8.setText("Available Times");
-
-        jButton2.setText("show");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel9.setText(" Appointment Type");
@@ -285,11 +282,7 @@ public class BookNewAppoinmentPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(txt, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addContainerGap())
+                .addGap(269, 269, 269))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -321,122 +314,170 @@ public class BookNewAppoinmentPanel extends javax.swing.JPanel {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(doctorcombo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jCheckBox1)
-                                    .addComponent(jCheckBox2)
-                                    .addComponent(jCheckBox3)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(datechooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(typecombo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 10, 10)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(11, 11, 11)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
-                            .addComponent(txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jCheckBox1)
+                            .addComponent(jCheckBox2)
+                            .addComponent(jCheckBox3)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(datechooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(typecombo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(68, Short.MAX_VALUE))
         );
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 0, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        timePicker2.showPopup(this, 100, 100);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
-        int patient = Integer.parseInt(patientf.getText());
+
+        String nic = patientf.getText();
+
         String doctor = doctorcombo.getSelectedItem().toString();
-        
+        String patientName = jLabel3.getText();
+
         Date d = datechooser.getDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String date = sdf.format(d);
-        
+
+        String date = "";
+        if (d == null) {
+            JOptionPane.showMessageDialog(this, "Please select a date", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            date = sdf.format(d);
+        }
+
         String type = typecombo.getSelectedItem().toString();
         String spe = specombo.getSelectedItem().toString();
         String branch = branchcombo.getSelectedItem().toString();
         String time = "";
-        
+
         if (jCheckBox1.isSelected()) {
-            
+
             time = jCheckBox1.getText();
         } else if (jCheckBox2.isSelected()) {
-            
+
             time = jCheckBox2.getText();
         } else if (jCheckBox3.isSelected()) {
-            
+
             time = jCheckBox3.getText();
         } else {
             JOptionPane.showMessageDialog(this, "Please Select Time", "Warning", JOptionPane.WARNING_MESSAGE);
         }
-        
+
         String note = this.note.getText();
-        
-        if (patient == 0) {
-            System.out.println("Please enter patient");
+
+        if (nic.isEmpty()) {
+
+            JOptionPane.showMessageDialog(this, "Please enter patient", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (doctor.isEmpty()) {
-            System.out.println("Plese select doctor");
-        } else if (date.isEmpty()) {
-            System.out.println(" please enter date ");
+
+            JOptionPane.showMessageDialog(this, "Plese select doctor", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (type.isEmpty()) {
-            System.out.println("Please select type");
+
+            JOptionPane.showMessageDialog(this, "Please select type", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (spe.isEmpty()) {
-            System.out.println("Please select specification");
+
+            JOptionPane.showMessageDialog(this, "Please select specification", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (branch.isEmpty()) {
-            System.out.println("Plase enter branch");
-        } else if (time.isEmpty()) {
-            System.out.println("plase enter time");
+
+            JOptionPane.showMessageDialog(this, "Please enter branch", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (note.isEmpty()) {
-            System.out.println("plese enter note");
+
+            JOptionPane.showMessageDialog(this, "Please Enter Note", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            
+
             if (mediator == null) {
                 System.out.println("null mediator ");
             } else {
-                AppoinmentModel appoinment = new AppoinmentModel(date, "Scheduled", note, patient, doctor, type, branch, "view", time, spe);
+                AppoinmentModel appoinment = new AppoinmentModel(date, "Scheduled", note, nic, doctor, type, branch, "view", time, spe);
                 mediator.bookAppointment(appoinment);
                 reset();
+
+                try {
+                    ResultSet rs = MySQL.execute("SELECT * FROM `appointments` WHERE `patients_nic`='" + nic + "' AND `time`='" + time + "'");
+
+                    if (rs.next()) {
+
+                        String appointmentId = String.valueOf(rs.getInt("appointment_id"));
+
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("Parameter1", patientName);
+                        params.put("Parameter2", nic);
+                        params.put("Parameter3", mobile);
+                        params.put("Parameter4", gender);
+                        params.put("Parameter5", appointmentId);
+                        params.put("Parameter6", doctor);
+                        params.put("Parameter7", type);
+                        params.put("Parameter8", branch);
+                        params.put("Parameter9", date);
+                        params.put("Parameter10", time);
+                        params.put("Parameter11", spe);
+
+                        System.out.println(patientName);
+                        System.out.println(nic);
+                        System.out.println(mobile);
+                        System.out.println(gender);
+                        System.out.println(appointmentId);
+                        System.out.println(doctor);
+                        System.out.println(type);
+                        System.out.println(branch);
+                        System.out.println(date);
+                        System.out.println(time);
+                        System.out.println(spe);
+
+                        String path = "src/reports/receipt.jasper";
+                        JasperPrint jasperPrint = JasperFillManager.fillReport(path, params, new JREmptyDataSource());
+                        JasperViewer.viewReport(jasperPrint, false);
+
+                    }
+
+                } catch (Exception ex) {
+                    Logger.getLogger(BookNewAppoinmentPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
-            
+
         }
-        
+
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int nic = Integer.parseInt(patientf.getText());
-        
-        if (nic == 0) {
-            
+        String nic = patientf.getText();
+
+        if (nic.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Enter Patient", "Warning", JOptionPane.WARNING_MESSAGE);
+
         } else {
-            
+
             try {
-                
+
                 ResultSet rs = MySQL.execute("SELECT * FROM `patients` WHERE `nic`='" + nic + "'");
-                
+
                 if (rs.next()) {
                     String name = rs.getString("first_name");
-                    
+
                     jLabel3.setText(name);
+
+                    mobile = rs.getString("phone");
+                    gender = rs.getString("gender");
+
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BookNewAppoinmentPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -448,7 +489,7 @@ public class BookNewAppoinmentPanel extends javax.swing.JPanel {
 
     private void datechooserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_datechooserMouseClicked
         Date selectedDate = datechooser.getDate();
-        
+
         if (selectedDate != null) {
             System.out.println("Selected Date: " + selectedDate);
         } else {
@@ -458,7 +499,7 @@ public class BookNewAppoinmentPanel extends javax.swing.JPanel {
 
     private void datechooserInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_datechooserInputMethodTextChanged
         Date selectedDate = datechooser.getDate();
-        
+
 
     }//GEN-LAST:event_datechooserInputMethodTextChanged
 
@@ -469,7 +510,6 @@ public class BookNewAppoinmentPanel extends javax.swing.JPanel {
     private com.toedter.calendar.JDateChooser datechooser;
     private javax.swing.JComboBox<String> doctorcombo;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
@@ -490,7 +530,6 @@ public class BookNewAppoinmentPanel extends javax.swing.JPanel {
     private javax.swing.JTextField patientf;
     private javax.swing.JComboBox<String> specombo;
     private com.raven.swing.TimePicker timePicker2;
-    private javax.swing.JFormattedTextField txt;
     private javax.swing.JComboBox<String> typecombo;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,91 +1,53 @@
-
 package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.SwingUtilities;
 
-
-
-
-// ---- Mediator Implementation ----
-
-
-
-
-
-
-
-
 public class AppointmentSchedulingPanel extends javax.swing.JPanel {
 
-      private AppoinementDashBoardPanel dashboardPanel;
+    private AppoinementDashBoardPanel dashboardPanel;
     private BookNewAppoinmentPanel bookingPanel;
     private ManageAppoinment managePanel;
     private AppointmentMediator mediator;
-  
-    
- 
-  
+
     public AppointmentSchedulingPanel() {
         initComponents();
         removeActivePanel();
-      
-        
-         initializePanels();
+
+        initializePanels();
         setupMediator();
-          loadDashboard();
-         mediator.refreshDashboard();
-        mediator.showMessage("🚀 Appointment system ready!");
+        loadDashboard();
+        mediator.refreshDashboard();
+        mediator.showMessage("Appointment system ready");
     }
-    
-    
-      private void initializePanels() {
+
+    private void initializePanels() {
         dashboardPanel = new AppoinementDashBoardPanel();
         bookingPanel = new BookNewAppoinmentPanel();
         managePanel = new ManageAppoinment();
     }
-      
-     void loadDashboard(){
-     
+
+    void loadDashboard() {
+
 //         if(dashboardPanel == null){
 //          dashboardPanel = new AppoinementDashBoardPanel();
 //         }
-         
-             BodyPanel.add(dashboardPanel, BorderLayout.CENTER);
-             
+        BodyPanel.add(dashboardPanel, BorderLayout.CENTER);
+
         SwingUtilities.updateComponentTreeUI(BodyPanel);
-        dashboardPanel. loadAppointments();
-     
-     }
-    
+        dashboardPanel.loadAppointments();
+
+    }
+
     private void setupMediator() {
         mediator = new AppointmentScheduler(dashboardPanel, bookingPanel, managePanel);
-        
+
         // Set mediator for all panels
         dashboardPanel.setMediator(mediator);
         bookingPanel.setMediator(mediator);
         managePanel.setMediator(mediator);
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -163,38 +125,34 @@ public class AppointmentSchedulingPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
+
         removeActivePanel();
-        
-      
-          BodyPanel.add(bookingPanel, BorderLayout.CENTER);
+
+        BodyPanel.add(bookingPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(BodyPanel);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        removeActivePanel(); 
-        loadDashboard();      
+        removeActivePanel();
+        loadDashboard();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         removeActivePanel();
-        
-        
-         BodyPanel.add(managePanel, BorderLayout.CENTER);
+
+        BodyPanel.add(managePanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(BodyPanel);
     }//GEN-LAST:event_jButton5ActionPerformed
 
-
-       public void removeActivePanel(){
-         Component[] components = BodyPanel.getComponents();
+    public void removeActivePanel() {
+        Component[] components = BodyPanel.getComponents();
         for (Component component : components) {
             BodyPanel.remove(component);
         }
         SwingUtilities.updateComponentTreeUI(BodyPanel);
     }
-  
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BodyPanel;
     private javax.swing.JButton jButton3;

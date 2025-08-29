@@ -16,74 +16,60 @@ import model.MySQL;
 import model.User;
 
 public class MedicalReportPanel extends javax.swing.JPanel {
-    
-    private String nic;   // patient NIC
+
+    private String nic;
     private List<MedicalReportModel> reports;
     private String id;
-    
+
     private int recordId;
-    
+
     User currentUser = AppContext.getInstance().getCurrentUser();
-    
+
     public MedicalReportPanel(String nic, List<MedicalReportModel> reports, String id) {
         initComponents();
-        
+
         loadData(nic, reports);
         this.nic = nic;
         this.reports = reports;
         this.id = id;
-        
+
         jButton2.setVisible(currentUser.canAccess("Update Medical Report"));
         jButton3.setVisible(currentUser.canAccess("Add New Medical Report"));
         jButton2.setEnabled(false);
-        
-//        addMedicalRecord(currentUser.canAccess("Enter medical Details"));
+
     }
-    
-    
-//    void addMedicalRecord(boolean isShow){
-//    
-//    jLabel1.setVisible(isShow);
-//    diagnosisField.setVisible(isShow);
-//    jLabel2.setVisible(isShow);
-//    jTextArea1.setVisible(isShow);
-//    jLabel3.setVisible(isShow);
-//    allergiesField1.setVisible(isShow);
-//    jLabel4.setVisible(isShow);
-//    medicationField1.setVisible(isShow);
-//    }
-    
+
     void reset() {
-        
+
         diagnosisField.setText("");
         jTextArea1.setText("");
         allergiesField1.setText("");
         medicationField1.setText("");
         jButton3.setEnabled(true);
-          jButton2.setEnabled(false);
-        
+        jButton2.setEnabled(false);
+
     }
-    
+
     public void loadData(String nic, List<MedicalReportModel> reports) {
-        
+
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        
+
         for (MedicalReportModel r : reports) {
             Vector v = new Vector();
-            
+
             v.add(r.getId());
             v.add(r.getCreatedAt());
             v.add(r.getDiagnosis());
             v.add(r.getTreatmentPlan());
             v.add(r.getAllergies());
             v.add(r.getMedications());
-            
+
             model.addRow(v);
         }
-        
+
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -258,7 +244,7 @@ public class MedicalReportPanel extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         SwingUtilities.getWindowAncestor(this).dispose();
-        
+
         PatientManagementPanel pm = new PatientManagementPanel();
         pm.reset();
 
@@ -266,82 +252,75 @@ public class MedicalReportPanel extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-       
-             int row = jTable1.getSelectedRow();
-            
-         
-      
-        
+        int row = jTable1.getSelectedRow();
+
         if (row == -1) {
-            
+
             JOptionPane.showMessageDialog(this, "Please Select Row", "Warning", JOptionPane.WARNING_MESSAGE);
-            
+
         } else {
-            
-              int lastRow = jTable1.getRowCount() - 1;
-               if (lastRow == row) {
-            
-            
-             String diagnosis = diagnosisField.getText();
-            String treatment = jTextArea1.getText();
-            String allergie = allergiesField1.getText();
-            String medication = medicationField1.getText();
-            
-            if (diagnosis.isEmpty()) {
-                
-                System.out.println("Please enter diagnosis");
-            } else if (treatment.isEmpty()) {
-                System.out.println("Please enter treatement");
-            } else if (allergie.isEmpty()) {
-                System.out.println("Please enter allergie");
-            } else if (medication.isEmpty()) {
-                System.out.println("Plase enter mediacation");
-            } else {
-                
-                try {
-                    MySQL.execute("UPDATE `medical records` SET `diagnosis`='" + diagnosis + "',`treatment_plan`='" + treatment + "',`allergies`='" + allergie + "',`medications`='" + medication + "',`patients_nic`='" + id + "' WHERE `record_id`='" + recordId + "' ");
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Operation completed successfully!",
-                            "Success",
-                            JOptionPane.INFORMATION_MESSAGE
-                    );
-                    
-                    PatientManagementPanel p = new PatientManagementPanel();
-                    p.check(nic, this);
-                    
-                    reset();
-                } catch (Exception e) {
-                    Logger.getLogger(MedicalReportPanel.class.getName()).log(Level.SEVERE, null, e);
+
+            int lastRow = jTable1.getRowCount() - 1;
+            if (lastRow == row) {
+
+                String diagnosis = diagnosisField.getText();
+                String treatment = jTextArea1.getText();
+                String allergie = allergiesField1.getText();
+                String medication = medicationField1.getText();
+
+                if (diagnosis.isEmpty()) {
+
+                    JOptionPane.showMessageDialog(this, "Please enter diagnosis", "Warning", JOptionPane.WARNING_MESSAGE);
+                } else if (treatment.isEmpty()) {
+
+                    JOptionPane.showMessageDialog(this, "Please enter treatement", "Warning", JOptionPane.WARNING_MESSAGE);
+                } else if (allergie.isEmpty()) {
+
+                    JOptionPane.showMessageDialog(this, "Please enter allergie", "Warning", JOptionPane.WARNING_MESSAGE);
+                } else if (medication.isEmpty()) {
+
+                    JOptionPane.showMessageDialog(this, "Plase enter mediacation", "Warning", JOptionPane.WARNING_MESSAGE);
+                } else {
+
+                    try {
+                        MySQL.execute("UPDATE `medical records` SET `diagnosis`='" + diagnosis + "',`treatment_plan`='" + treatment + "',`allergies`='" + allergie + "',`medications`='" + medication + "',`patients_nic`='" + id + "' WHERE `record_id`='" + recordId + "' ");
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "Operation completed successfully!",
+                                "Success",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+
+                        PatientManagementPanel p = new PatientManagementPanel();
+                        p.check(nic, this);
+
+                        reset();
+                    } catch (Exception e) {
+                        Logger.getLogger(MedicalReportPanel.class.getName()).log(Level.SEVERE, null, e);
+                    }
+
+                  
+
                 }
-                
-                System.out.println("Have report");
-                
+
+            } else {
+
+                JOptionPane.showMessageDialog(this, "Only the last record can be updated!", "Warning", JOptionPane.WARNING_MESSAGE);
+                reset();
             }
-            
-            
-            }else{
-               
-               JOptionPane.showMessageDialog(this, "Only Last Record Can Update", "Warning", JOptionPane.WARNING_MESSAGE);
-               reset();
-               }
-        
-            
-            
-           
-            
+
         }
-        
+
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
+
         String diagnosis = diagnosisField.getText();
         String treatment = jTextArea1.getText();
         String allergi = allergiesField1.getText();
         String medication = medicationField1.getText();
-        
+
         if (diagnosis.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter Diagnosis", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (treatment.isEmpty()) {
@@ -351,65 +330,62 @@ public class MedicalReportPanel extends javax.swing.JPanel {
         } else if (medication.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter Medication", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            
+
             Date date = new Date();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             String dateString = format.format(date);
-            
+
             try {
                 MySQL.execute("INSERT INTO `medical records` (`diagnosis`,`treatment_plan`,`allergies`,`medications`,`created_at`,`patients_nic`) VALUES ('" + diagnosis + "','" + treatment + "','" + allergi + "','" + medication + "','" + dateString + "','" + nic + "')");
                 JOptionPane.showMessageDialog(
-                            null,
-                            "Operation completed successfully!",
-                            "Success",
-                            JOptionPane.INFORMATION_MESSAGE
-                    );
-                
+                        null,
+                        "Operation completed successfully!",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+
                 PatientManagementPanel p = new PatientManagementPanel();
                 p.check(nic, this);
-                
+
                 reset();
-                
+
             } catch (Exception ex) {
                 Logger.getLogger(MedicalReportPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
 
-        
-        if(evt.getClickCount()==1){
-         reset();
+        if (evt.getClickCount() == 1) {
+            reset();
         }
 
-
-
         if (evt.getClickCount() == 2) {
-            
-               jButton2.setEnabled(true);
+
+            jButton2.setEnabled(true);
             jButton3.setEnabled(false);
-            
+
 //            int lastRow = jTable1.getRowCount() - 1;
             int selectedRow = jTable1.getSelectedRow();
 //            
 //            if (lastRow == selectedRow) {
-                
-                recordId = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
-                String diagnosis = jTable1.getValueAt(selectedRow, 1).toString();
-                String treatment = jTable1.getValueAt(selectedRow, 2).toString();
-                String allergi = jTable1.getValueAt(selectedRow, 3).toString();
-                String medication = jTable1.getValueAt(selectedRow, 4).toString();
-                
-                diagnosisField.setText(diagnosis);
-                jTextArea1.setText(treatment);
-                allergiesField1.setText(allergi);
-                medicationField1.setText(medication);
+
+            recordId = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
+            String diagnosis = jTable1.getValueAt(selectedRow, 2).toString();
+            String treatment = jTable1.getValueAt(selectedRow, 3).toString();
+            String allergi = jTable1.getValueAt(selectedRow, 4).toString();
+            String medication = jTable1.getValueAt(selectedRow, 5).toString();
+
+            diagnosisField.setText(diagnosis);
+            jTextArea1.setText(treatment);
+            allergiesField1.setText(allergi);
+            medicationField1.setText(medication);
 //            } else {
 //                JOptionPane.showMessageDialog(this, "Only Last Record Can Update", "Warning", JOptionPane.WARNING_MESSAGE);
 //            }
-            
+
         }
     }//GEN-LAST:event_jTable1MouseClicked
 

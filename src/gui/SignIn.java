@@ -5,6 +5,7 @@ import com.mysql.cj.jdbc.result.ResultSetFactory;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.AppContext;
 import model.MySQL;
 import model.StaffModel;
@@ -140,6 +141,9 @@ public class SignIn extends javax.swing.JFrame {
 
                     dashboard.setVisible(true);
                     this.dispose();
+                } else {
+
+                    JOptionPane.showMessageDialog(this, "Invalid UserName Or Password", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
 
             } catch (Exception ex) {

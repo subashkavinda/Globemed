@@ -1,25 +1,17 @@
-
 package gui;
-
 
 public class ManageAppoinment extends javax.swing.JPanel {
 
-      private AppointmentMediator mediator;
-    
+    private AppointmentMediator mediator;
+
     public ManageAppoinment() {
         initComponents();
     }
-    
-     public void setMediator(AppointmentMediator mediator) {
+
+    public void setMediator(AppointmentMediator mediator) {
         this.mediator = mediator;
     }
-    
-//    public void showMessage(String message) {
-//        messageArea.append(message + "\n");
-//        messageArea.setCaretPosition(messageArea.getDocument().getLength());
-//    }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -294,12 +286,10 @@ public class ManageAppoinment extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-            
-        
+
         int appointmentid = Integer.parseInt(jTextField1.getText());
-        
-        
-        
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package gui;
 
 import java.awt.Dimension;
@@ -19,9 +15,7 @@ import java.util.logging.Logger;
 import model.MedicalReportModel;
 import model.MySQL;
 
-
 public class DoctorAppointment extends javax.swing.JPanel {
-
 
     private JScrollPane scrollPane;
 
@@ -36,7 +30,7 @@ public class DoctorAppointment extends javax.swing.JPanel {
         User currentUser = AppContext.getInstance().getCurrentUser();
 
         try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `appointments` WHERE `doctor`='" + currentUser.getUsername() + "' AND `status`='" + "Scheduled" + "' ");
+            ResultSet rs = MySQL.execute("SELECT * FROM `appointments` WHERE `doctor`='" + currentUser.getUsername() + "' AND `status`='" + "Scheduled" + "' ORDER BY `time`");
 
             jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.Y_AXIS));
 
@@ -49,7 +43,7 @@ public class DoctorAppointment extends javax.swing.JPanel {
                 ResultSet rs1 = MySQL.execute("SELECT * FROM `patients` WHERE `nic`='" + rs.getString("patients_nic") + "'");
 
                 if (rs1.next()) {
-                    panel.set(rs.getString("patients_nic"), rs1.getString("phone"), rs1.getString("gender"), rs.getInt("appointment_id"), this);
+                    panel.set(rs.getString("patients_nic"), rs1.getString("phone"), rs1.getString("gender"), rs.getInt("appointment_id"), this,rs.getString("time"));
                 }
 
                 ResultSet rs2 = MySQL.execute("SELECT * FROM `medical records` WHERE `patients_nic`='" + rs.getString("patients_nic") + "'");
@@ -71,25 +65,19 @@ public class DoctorAppointment extends javax.swing.JPanel {
 
                 panel.setMedicalData(rs.getString("patients_nic"), reports, rs.getString("patients_nic"));
 
-               
                 jPanel1.add(panel);
                 jPanel1.add(Box.createVerticalStrut(10));
 
-                
             }
-
 
             scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-
             scrollPane.setPreferredSize(new Dimension(800, 500));
-
 
             setLayout(new FlowLayout());
             add(scrollPane);
-            
-            
-             jPanel1.revalidate(); 
+
+            jPanel1.revalidate();
             jPanel1.repaint();
 
         } catch (Exception ex) {
@@ -98,7 +86,6 @@ public class DoctorAppointment extends javax.swing.JPanel {
 
     }
 
- 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -107,7 +94,7 @@ public class DoctorAppointment extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setText("Doctor Appointment.");
+        jLabel1.setText("Doctor Appointments.");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -124,21 +111,20 @@ public class DoctorAppointment extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(248, 248, 248)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(407, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(291, 291, 291)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(322, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(29, 29, 29)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
+                .addGap(32, 32, 32)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );

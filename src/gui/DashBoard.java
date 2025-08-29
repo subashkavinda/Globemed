@@ -84,15 +84,15 @@ public class DashBoard extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(102, 153, 255));
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        setMinimumSize(new java.awt.Dimension(1606, 900));
         setSize(new java.awt.Dimension(0, 0));
-
-        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
         jButton1.setBackground(new java.awt.Color(0, 0, 0));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Patient Management");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 255, 51)));
+        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 204, 255)));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -102,8 +102,8 @@ public class DashBoard extends javax.swing.JFrame {
         jButton2.setBackground(new java.awt.Color(0, 0, 0));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("View Today Appointment");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 255, 0)));
+        jButton2.setText("Today Appointments");
+        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 204, 255)));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -114,7 +114,7 @@ public class DashBoard extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Appointment Scheduling an manage");
-        jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 255, 0)));
+        jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 204, 255)));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -125,7 +125,7 @@ public class DashBoard extends javax.swing.JFrame {
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Billing & Insurence");
-        jButton4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 255, 0)));
+        jButton4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 204, 255)));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -136,7 +136,7 @@ public class DashBoard extends javax.swing.JFrame {
         jButton5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("Report Generated");
-        jButton5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 255, 0)));
+        jButton5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 204, 255)));
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
@@ -147,7 +147,7 @@ public class DashBoard extends javax.swing.JFrame {
         jButton6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton6.setForeground(new java.awt.Color(255, 255, 255));
         jButton6.setText("Staff Management");
-        jButton6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 255, 0)));
+        jButton6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 204, 255)));
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -156,8 +156,9 @@ public class DashBoard extends javax.swing.JFrame {
 
         jButton7.setBackground(new java.awt.Color(0, 0, 0));
         jButton7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton7.setForeground(new java.awt.Color(255, 255, 255));
         jButton7.setText("View Doctors Appointments");
-        jButton7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 255, 0)));
+        jButton7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 204, 255)));
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
@@ -173,12 +174,8 @@ public class DashBoard extends javax.swing.JFrame {
             .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,7 +215,7 @@ public class DashBoard extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
@@ -227,13 +224,10 @@ public class DashBoard extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel2)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -292,21 +286,20 @@ public class DashBoard extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
-        if("Admin".equals(user.getRoleName())){
-        
-         BillingAndClaimsManagement bill = new BillingAndClaimsManagement();
-        bill.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        bill.setVisible(true);
-        }else{
-        
-        MedicationBilling bill = new MedicationBilling();
-        bill.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        bill.setVisible(true);
-        
+        if ("Admin".equals(user.getRoleName())) {
+
+            BillingAndClaimsManagement bill = new BillingAndClaimsManagement();
+            bill.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            bill.setVisible(true);
+        } else {
+
+            MedicationBilling bill = new MedicationBilling();
+            bill.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            bill.setVisible(true);
+
         }
-        
-        
-       
+
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -347,13 +340,13 @@ public class DashBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-                removeActivePanel();
+        removeActivePanel();
         if (report == null) {
             report = new Report();
         }
 
         BodyPanel.add(report, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(BodyPanel);  
+        SwingUtilities.updateComponentTreeUI(BodyPanel);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     public void addfirstpage() {
@@ -399,6 +392,7 @@ public class DashBoard extends javax.swing.JFrame {
         //</editor-fold>
 
         FlatDarculaLaf.setup();
+       
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

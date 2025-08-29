@@ -1,7 +1,6 @@
 package gui;
 
-import com.mysql.cj.x.protobuf.MysqlxNotice.Warning.Level;
-import java.awt.BorderLayout;
+import java.lang.System.Logger;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +19,7 @@ import model.User;
 
 interface PatientData {
 
- PatientModel getDetails();
+    PatientModel getDetails();
     String getPatientId();
     List<MedicalReportModel> getMedicalInfo();
 
@@ -46,12 +45,13 @@ class BasicPatientData implements PatientData {
 
     @Override
     public List<MedicalReportModel> getMedicalInfo() {
-        return new ArrayList<>(); // empty list by default
+        return new ArrayList<>(); 
     }
 }
 
 abstract class PatientDecorator implements PatientData {
- protected PatientData patientData;
+
+    protected PatientData patientData;
 
     public PatientDecorator(PatientData patientData) {
         this.patientData = patientData;
@@ -75,7 +75,7 @@ abstract class PatientDecorator implements PatientData {
 
 class MedicalRecordDecorator extends PatientDecorator {
 
-   private List<MedicalReportModel> medicalRecords = new ArrayList<>();
+    private List<MedicalReportModel> medicalRecords = new ArrayList<>();
 
     public MedicalRecordDecorator(PatientData patientData, MedicalReportModel medicalRecord) {
         super(patientData);
@@ -96,36 +96,28 @@ class MedicalRecordDecorator extends PatientDecorator {
 
 public class PatientManagementPanel extends javax.swing.JPanel {
 
-    
-
     private Map<String, PatientData> patients = new HashMap<>();
     private DefaultTableModel model;
     private User currentUser;
-    
-    
 
     public PatientManagementPanel() {
         initComponents();
         loadPatientFromDb();
         loadGender();
 
-      
-      currentUser = AppContext.getInstance().getCurrentUser();
-      
-      
+        currentUser = AppContext.getInstance().getCurrentUser();
+
         if (currentUser != null && "Doctor".equals(currentUser.getRoleName())) {
             loadDoctorFeatures();
         }
-        
-        
+
         jPanel1.setVisible(currentUser.canAccess("Enter Patient Details"));
         jButton1.setVisible(currentUser.canAccess("Add Patient"));
         jButton3.setVisible(currentUser.canAccess("Update Patient"));
     }
-    
-    private void loadDoctorFeatures(){
-        
-         
+
+    private void loadDoctorFeatures() {
+
     }
 
     private void loadGender() {
@@ -154,31 +146,19 @@ public class PatientManagementPanel extends javax.swing.JPanel {
         genderCombo.setSelectedIndex(0);
         jTable1.clearSelection();
         loadPatientFromDb();
-        
+
         System.out.println("call");
 
     }
-    
-    
-    public void check(String nic,MedicalReportPanel panel){
-    loadPatientFromDb();
-   
-    
-      PatientData pd = patients.get(nic);
-      List<MedicalReportModel> reports = pd.getMedicalInfo();
-    panel.loadData(nic, reports);
-    
+
+    public void check(String nic, MedicalReportPanel panel) {
+        loadPatientFromDb();
+
+        PatientData pd = patients.get(nic);
+        List<MedicalReportModel> reports = pd.getMedicalInfo();
+        panel.loadData(nic, reports);
+
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     private void loadPatientFromDb() {
 
@@ -202,7 +182,7 @@ public class PatientManagementPanel extends javax.swing.JPanel {
 
                 PatientData pp = new BasicPatientData(p);
 
-                // Load all medical reports for patient
+               
                 ResultSet rs2 = MySQL.execute("SELECT * FROM `medical records` WHERE patients_nic='" + p.getNic() + "'ORDER BY `created_at` ASC");
                 MedicalRecordDecorator decorator = null;
                 while (rs2.next()) {
@@ -265,6 +245,7 @@ public class PatientManagementPanel extends javax.swing.JPanel {
         addressField = new javax.swing.JTextField();
         genderCombo = new javax.swing.JComboBox<>();
         jButton6 = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -276,20 +257,25 @@ public class PatientManagementPanel extends javax.swing.JPanel {
         jButton5 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
-
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Nic");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("First Name");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("Last Name");
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setText("Birth day");
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("Mobile Number");
 
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setText("address");
 
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel9.setText("Gender");
 
         genderCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -304,44 +290,52 @@ public class PatientManagementPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel10.setText("Patient Management");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(16, 16, 16)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(nicfield)
-                    .addComponent(firstNameField)
-                    .addComponent(lastNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))
-                .addGap(54, 54, 54)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel7))
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(dobField)
-                    .addComponent(mobileField)
-                    .addComponent(addressField, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addGap(18, 18, 18)
-                        .addComponent(genderCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(56, 56, 56))
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addGap(15, 15, 15)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(nicfield)
+                            .addComponent(firstNameField)
+                            .addComponent(lastNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(54, 54, 54)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel7))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dobField)
+                            .addComponent(mobileField)
+                            .addComponent(addressField, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addGap(18, 18, 18)
+                                .addComponent(genderCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addGap(17, 17, 17)
+                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(addressField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -366,7 +360,7 @@ public class PatientManagementPanel extends javax.swing.JPanel {
                                 .addComponent(jLabel5)
                                 .addComponent(jLabel8))
                             .addComponent(lastNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addGap(49, 49, 49))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -397,7 +391,7 @@ public class PatientManagementPanel extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Patients Record");
+        jLabel1.setText("Patients Records.");
 
         jButton1.setText("Add Patient");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -456,7 +450,7 @@ public class PatientManagementPanel extends javax.swing.JPanel {
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(jButton5)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(383, 383, 383)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -473,7 +467,7 @@ public class PatientManagementPanel extends javax.swing.JPanel {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -525,27 +519,27 @@ public class PatientManagementPanel extends javax.swing.JPanel {
         String gender = (String) genderCombo.getSelectedItem();
 
         if (nic.isEmpty()) {
-             JOptionPane.showMessageDialog(this, "Please Enter  Nic Number", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please Enter  Nic Number", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (firstName.isEmpty()) {
-              JOptionPane.showMessageDialog(this, "Please Enter  First Name", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please Enter  First Name", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (lastName.isEmpty()) {
-              JOptionPane.showMessageDialog(this, "Please Enter  Last Name", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please Enter  Last Name", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (dob.isEmpty()) {
-              JOptionPane.showMessageDialog(this, "Please Enter  Birthdaty", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please Enter  Birthdaty", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (mobile.isEmpty()) {
-              JOptionPane.showMessageDialog(this, "Please Enter Your Mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please Enter Your Mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (address.isEmpty()) {
-              JOptionPane.showMessageDialog(this, "Please Enter Your Address", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please Enter Your Address", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (gender.equals("Select Gender")) {
-              JOptionPane.showMessageDialog(this, "Please Select gender", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please Select gender", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-         
+
             try {
                 MySQL.execute("INSERT INTO `patients` (`first_name`,`last_name`,`dob`,`phone`,`nic`,`address`,`gender`) VALUES ('" + firstName + "','" + lastName + "','" + dob + "','" + mobile + "','" + nic + "','" + address + "','" + gender + "')");
                 reset();
 
             } catch (Exception ex) {
-//                Logger.getLogger(PatientManagement.class.getName()).log(Level.SEVERE, null, ex);
+              
             }
 
         }
@@ -567,19 +561,19 @@ public class PatientManagementPanel extends javax.swing.JPanel {
             String gender = (String) genderCombo.getSelectedItem();
 
             if (nic.isEmpty()) {
-                  JOptionPane.showMessageDialog(this, "Please Enter Your Nic Number", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Enter Your Nic Number", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (firstName.isEmpty()) {
-                  JOptionPane.showMessageDialog(this, "Please Enter Your First Name", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Enter Your First Name", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (lastName.isEmpty()) {
-                  JOptionPane.showMessageDialog(this, "Please Enter Your Last Name", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Enter Your Last Name", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (dob.isEmpty()) {
-                  JOptionPane.showMessageDialog(this, "Please Enter Your Birthdaty", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Enter Your Birthdaty", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (mobile.isEmpty()) {
-                  JOptionPane.showMessageDialog(this, "Please Enter Your Mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Enter Your Mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (address.isEmpty()) {
-                  JOptionPane.showMessageDialog(this, "Please Enter Your Address", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Enter Your Address", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (gender.equals("Select Gender")) {
-                  JOptionPane.showMessageDialog(this, "Please Select gender", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Select gender", "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
                 try {
                     MySQL.execute("UPDATE `patients` SET "
@@ -598,7 +592,7 @@ public class PatientManagementPanel extends javax.swing.JPanel {
             }
 
         } else {
-//            JOptionPane.showMessageDialog(this, "please select user", "message", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(this, "please select user", "message", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -631,7 +625,7 @@ public class PatientManagementPanel extends javax.swing.JPanel {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
 
-         int row = jTable1.getSelectedRow();
+        int row = jTable1.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this, "Please Select Patient", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
@@ -654,7 +648,7 @@ public class PatientManagementPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-         loadPatientFromDb();
+        loadPatientFromDb();
     }//GEN-LAST:event_jButton2ActionPerformed
 
 
@@ -670,6 +664,7 @@ public class PatientManagementPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

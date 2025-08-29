@@ -63,9 +63,6 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
                 String insurenceCompany = rs.getString("insurance_company");
                 String policyNumber = rs.getString("policy_number");
                 String holderName = rs.getString("policyHolderName");
-
-//                String appointmentIdText = jTextField3.getText();
-//                int appointmentId = Integer.parseInt(appointmentIdText);
                 String servicetype = rs.getString("servicetype");
                 String amountText = rs.getString("claim_amount");
                 double amount = Double.parseDouble(amountText);
@@ -99,23 +96,22 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
                     btn2.setForeground(Color.black);
 
                     btn2.addActionListener(e -> {
-                        
+
                         try {
                             if (rr.next()) {
 
-                              
                                 if (rrr.next()) {
 
                                     int api = rrr.getInt("appointments_appointment_id");
                                     String pn = rr.getString("first_name") + " " + rr.getString("last_name");
                                     String pm = rr.getString("phone");
                                     String pd = rr.getString("dob");
-                                   
+
                                     Financial f = new Financial(pn, api, servicetype, amount,
                                             pm, pd, insurenceCompany,
                                             policyNumber, holderName, true);
 
-                                 f.accept(new FinancialReport());
+                                    f.accept(new FinancialReport());
                                 }
 
                             }
@@ -147,7 +143,7 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
                 public Component getTableCellRendererComponent(JTable table, Object value,
                         boolean isSelected, boolean hasFocus,
                         int row, int column) {
-                    return (Component) value; // show button
+                    return (Component) value; 
                 }
             });
 
@@ -156,7 +152,7 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
                 public Component getTableCellRendererComponent(JTable table, Object value,
                         boolean isSelected, boolean hasFocus,
                         int row, int column) {
-                    return (Component) value; // show button
+                    return (Component) value; 
                 }
             });
 
@@ -189,7 +185,7 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
                     if (col == jTable1.getColumnModel().getColumnIndex("Action")) {
                         Object value = jTable1.getValueAt(row, col);
                         if (value instanceof JButton btn) {
-                            btn.doClick(); // <--- this will trigger your ActionListener
+                            btn.doClick(); 
                         }
                     }
                 }
@@ -623,12 +619,16 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
         String nic = jTextField1.getText();
         String type = jComboBox1.getSelectedItem().toString();
         String amountText = jTextField2.getText();
-        int appointmentId = Integer.parseInt(jTextField3.getText());
+        String appointmentIdText = jTextField3.getText();
+        int appointmentId = 0;
 
         ClaimProcessor processor = new ClaimProcessor();
 
         if (nic.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Add Appointment Details", "Warning", JOptionPane.WARNING_MESSAGE);
+        }else if(appointmentIdText.isEmpty()){
+             appointmentId = Integer.parseInt(appointmentIdText);
+        
         } else if (amountText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter Amount", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
