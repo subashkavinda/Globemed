@@ -143,7 +143,7 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
                 public Component getTableCellRendererComponent(JTable table, Object value,
                         boolean isSelected, boolean hasFocus,
                         int row, int column) {
-                    return (Component) value; 
+                    return (Component) value;
                 }
             });
 
@@ -152,7 +152,7 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
                 public Component getTableCellRendererComponent(JTable table, Object value,
                         boolean isSelected, boolean hasFocus,
                         int row, int column) {
-                    return (Component) value; 
+                    return (Component) value;
                 }
             });
 
@@ -185,7 +185,7 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
                     if (col == jTable1.getColumnModel().getColumnIndex("Action")) {
                         Object value = jTable1.getValueAt(row, col);
                         if (value instanceof JButton btn) {
-                            btn.doClick(); 
+                            btn.doClick();
                         }
                     }
                 }
@@ -306,10 +306,13 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("Insurence Company");
 
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setText("Policy Number");
 
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel9.setText("Policy Holder Name");
 
         jButton2.setText("Process Billing");
@@ -626,9 +629,9 @@ public class BillingAndClaimsManagement extends javax.swing.JFrame {
 
         if (nic.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Add Appointment Details", "Warning", JOptionPane.WARNING_MESSAGE);
-        }else if(appointmentIdText.isEmpty()){
-             appointmentId = Integer.parseInt(appointmentIdText);
-        
+        } else if (appointmentIdText.isEmpty()) {
+            appointmentId = Integer.parseInt(appointmentIdText);
+
         } else if (amountText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter Amount", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {

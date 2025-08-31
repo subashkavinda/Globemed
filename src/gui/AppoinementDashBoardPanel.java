@@ -27,8 +27,6 @@ public class AppoinementDashBoardPanel extends javax.swing.JPanel {
         initComponents();
         loadAppointments();
         loadCombobox();
-        
-    
     }
 
     private void reset() {
@@ -114,7 +112,6 @@ public class AppoinementDashBoardPanel extends javax.swing.JPanel {
             while (rs.next()) {
 
                 Vector row = new Vector();
-
                 row.add(rs.getString("appointment_id"));
                 row.add(rs.getString("patients_nic"));
                 row.add(rs.getString("doctor"));

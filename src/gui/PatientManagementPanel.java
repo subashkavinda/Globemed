@@ -146,7 +146,6 @@ public class PatientManagementPanel extends javax.swing.JPanel {
         genderCombo.setSelectedIndex(0);
         jTable1.clearSelection();
         loadPatientFromDb();
-
         System.out.println("call");
 
     }

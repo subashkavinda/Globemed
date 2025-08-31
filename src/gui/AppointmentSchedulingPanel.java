@@ -43,7 +43,7 @@ public class AppointmentSchedulingPanel extends javax.swing.JPanel {
     private void setupMediator() {
         mediator = new AppointmentScheduler(dashboardPanel, bookingPanel, managePanel);
 
-        // Set mediator for all panels
+      
         dashboardPanel.setMediator(mediator);
         bookingPanel.setMediator(mediator);
         managePanel.setMediator(mediator);

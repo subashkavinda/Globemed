@@ -8,7 +8,7 @@ import model.MySQL;
 
 
 public interface AppointmentMediator {
-       void bookAppointment(AppoinmentModel appoinment);
+    void bookAppointment(AppoinmentModel appoinment);
     void cancelAppointment(int appointmentId);
     void refreshDashboard();
     void showMessage(String message);
@@ -32,13 +32,9 @@ class AppointmentScheduler implements AppointmentMediator {
 
     @Override
     public void bookAppointment(AppoinmentModel appoinment) {
-        // Validate input
-//        if (patient.trim().isEmpty() || time.trim().isEmpty()) {
-//            showMessage("❌ Please fill in patient name and time!");
-//            return;
-//        }
+      
 
-            System.out.println("book appointment method call");
+          
 
              String date = appoinment.getDate();
              String status = appoinment.getStatus();
@@ -86,9 +82,7 @@ class AppointmentScheduler implements AppointmentMediator {
 
     @Override
     public void refreshDashboard() {
-        
-
-        
+                
         if (dashboardPanel != null) {
             dashboardPanel.loadAppointments();
         }
